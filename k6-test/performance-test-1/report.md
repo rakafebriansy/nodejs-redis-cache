@@ -23,11 +23,11 @@ Skenario pengujian menyimulasikan lonjakan akses hingga **100 *request* bersamaa
 | **Min Response**| **25.33 ms** | ✅ LULUS | Kecepatan optimal saat server dalam kondisi sepi (VU rendah). |
 
 ### 🔍 2. Akar Masalah (Bottleneck)
-Masalah murni terjadi pada **Antrean Database (MySQL/Prisma)**. 
-Saat aplikasi POS menerima ratusan *request* menu secara bersamaan, Prisma harus melakukan *query* berulang kali ke database untuk menarik data *parent* dan *child* kategori. Server Node.js terbukti sanggup menahan beban (terlihat dari *error rate* 0%), tetapi MySQL kewalahan melayani permintaan pembacaan data yang masif dalam satu waktu, sehingga menciptakan antrean respons hingga 10 detik.
+Masalah murni terjadi pada antrean database akibat **N+1 Query Problem**. 
+Saat aplikasi POS menerima ratusan *request* menu secara bersamaan, Prisma melakukan *query* berulang kali ke database untuk menarik data *parent* dan kemudian melakukan *looping* untuk memanggil *child* kategorinya secara terpisah. Server Node.js terbukti sanggup menahan beban (terlihat dari *error rate* 0%), tetapi MySQL kewalahan melayani eksekusi puluhan ribu *query* kecil secara masif dalam satu waktu, sehingga antrean memanjang dan memicu *delay* hingga 10 detik.
 
 ### 💡 3. Rekomendasi Solusi
-Mengingat data kategori menu ini statis dan jarang diubah, melakukan *query* ke MySQL untuk setiap *request* sangat membebani sistem.
+Sebelum menambahkan *layer* infrastruktur baru seperti Redis, logika pengambilan data di level ORM/aplikasi harus disehatkan terlebih dahulu agar tidak menyiksa database.
 
-* **Implementasi Caching dengan Redis:** Simpan struktur JSON kategori menu ke dalam memori RAM (Redis) pada tarikan pertama.
-* **Hasil yang Diharapkan:** 1.786 *request* berikutnya akan dilayani langsung oleh Redis tanpa menyentuh MySQL. Ini diproyeksikan akan memangkas waktu P95 dari **7.8 detik** menjadi di bawah **50 ms**.
+* **Resolusi N+1 Query:** Lakukan *refactoring* pada kode Prisma Client untuk memanfaatkan *nested reads* (misal: menggunakan parameter `include` untuk merelasikan *parent* dan *children*). Ini akan memaksa database menggunakan *JOIN* dan menyelesaikan permintaan hanya dalam satu kali tarikan *query* per *request*.
+* **Hasil yang Diharapkan:** Menghemat ribuan proses I/O pada MySQL, melipatgandakan *throughput* aplikasi secara drastis, dan memangkas waktu P95 dari **7.8 detik** menjadi hanya kisaran **ratusan milidetik**.

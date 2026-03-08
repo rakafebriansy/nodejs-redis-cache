@@ -7,24 +7,9 @@ const adapter = new PrismaMariaDb({
     host: "127.0.0.1",
     port: 3306,
     user: "root",
-    password: "", // Biarkan kosong untuk Laragon
+    password: "",
     database: "nodejs_redis_cache",
     connectionLimit: 5,
-    // Ini adalah fitur logger tambahan untuk mengintip masalah aslinya
-    logger: {
-        network: (info) => {
-            console.log("=== PRISMA ADAPTER NETWORK ===", info);
-        },
-        query: (info) => {
-            console.log("=== PRISMA ADAPTER QUERY ===", info);
-        },
-        error: (error) => {
-            console.error("=== PRISMA ADAPTER ERROR ===", error);
-        },
-        warning: (info) => {
-            console.warn("=== PRISMA ADAPTER WARNING ===", info);
-        },
-    }
 });
 
 export const prismaClient = new PrismaClient({
