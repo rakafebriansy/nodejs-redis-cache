@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -26,9 +23,10 @@ model Contact {
   email      String?   @db.VarChar(200)
   phone      String?   @db.VarChar(20)
   username   String    @db.VarChar(100)
-  user       User      @relation(fields: [username], references: [username])
   addresses  Address[]
+  user       User      @relation(fields: [username], references: [username])
 
+  @@index([username], map: "contacts_username_fkey")
   @@map("contacts")
 }
 
@@ -42,5 +40,17 @@ model Address {
   contact_id  Int
   contact     Contact @relation(fields: [contact_id], references: [id])
 
+  @@index([contact_id], map: "addresses_contact_id_fkey")
   @@map("addresses")
+}
+
+model Category {
+  id        String     @id @db.VarChar(100)
+  name      String     @db.VarChar(255)
+  parent_id String?    @db.VarChar(100)
+  parent    Category?  @relation("parents", fields: [parent_id], references: [id])
+  children  Category[] @relation("parents")
+
+  @@index([parent_id], map: "categories_parent_id_fkey")
+  @@map("categories")
 }
