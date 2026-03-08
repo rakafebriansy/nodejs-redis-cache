@@ -1,5 +1,4 @@
 # 📊 Ringkasan Uji Performa (Load Test) API Kategori
-commit c9c03032d5098f3c05ba1437ac23b422ac150bc6
 
 ### Spesifikasi
 
