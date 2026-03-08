@@ -32,4 +32,4 @@ Telah dilakukan *refactoring* pada *layer* database (Prisma ORM) untuk menyelesa
 
 2. **Skalabilitas Kapasitas Menakjubkan:** Dalam durasi waktu yang persis sama (70 detik) dan beban yang sama (100 VU), aplikasi yang tadinya hanya mampu melayani 1.787 pelanggan kini sanggup melayani **33.888 pelanggan** tanpa ada satu pun *request* yang *error*.
 
-3. **Pengalaman Pengguna (User Experience):** Pengguna aplikasi Point of Sale (POS) yang sebelumnya harus menunggu menu *loading* hingga nyaris 8 detik saat jam sibuk, kini akan melihat layar mem
+3. **Pengalaman Pengguna (User Experience):** Pengguna aplikasi yang sebelumnya harus menunggu menu *loading* hingga nyaris 8 detik saat jam sibuk, kini akan melihat layar mem

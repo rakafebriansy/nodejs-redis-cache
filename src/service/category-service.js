@@ -1,3 +1,4 @@
+import Redis from "ioredis";
 import { prismaClient } from "../application/database.js"
 
 // // No optimization
@@ -29,9 +30,40 @@ import { prismaClient } from "../application/database.js"
 //     return parents;
 // }
 
-// Fix n+1
+// // Fix n+1
+// const findAll = async () => {
+//     // using select in
+//     const parents = await prismaClient.category.findMany({
+//         where: {
+//             parent_id: null
+//         },
+//         select: {
+//             id: true,
+//             name: true,
+//             children: true
+
+
+//         }
+//     });
+
+//     return parents;
+// }
+
+// Caching
+const redis = new Redis({
+    host: 'localhost',
+    port: 6379,
+    db: 0
+});
+
 const findAll = async () => {
-    // using select in
+    // are the data in redis 
+    const json = await redis.get('categories');
+
+    // if true, just return the data
+    if (json) return JSON.parse(json);
+
+    // if false, lets get the data from database, then store inside redis
     const parents = await prismaClient.category.findMany({
         where: {
             parent_id: null
@@ -41,9 +73,11 @@ const findAll = async () => {
             name: true,
             children: true
 
-            
+
         }
     });
+
+    await redis.setex('categories', 60 * 60, JSON.stringify(parents));
 
     return parents;
 }

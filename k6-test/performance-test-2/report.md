@@ -14,7 +14,7 @@ Skenario pengujian kembali menyimulasikan lonjakan akses hingga **100 Virtual Us
 | **Min Response**| **0.5 ms (509 µs)** | ✅ LULUS | Kecepatan optimal eksekusi Node.js tanpa hambatan I/O *database*. |
 
 ### 🔍 2. Analisis Perubahan (Dampak Resolusi N+1 Query)
-Penghapusan masalah N+1 memberikan napas lega yang luar biasa bagi MySQL dan Node.js di aplikasi POS ini.
+Penghapusan masalah N+1 memberikan napas lega yang luar biasa bagi MySQL dan Node.js di aplikasi ini.
 * **Database Tidak Lagi Disiksa:** Sebelumnya, untuk memuat 10 kategori beserta anak-anaknya, ORM mungkin melakukan belasan hingga puluhan *query* terpisah secara beruntun per 1 *request*. Dengan perbaikan N+1, *query* disatukan menjadi jauh lebih sedikit dan efisien.
 * **Daya Tampung Meroket:** Karena *bottleneck* antrean *query* hilang, sistem sekarang mampu memproses **~484 request per detik** (sebelumnya hanya ~25 req/sec). 
 * **Beban Jaringan:** Node.js berhasil mengirimkan data JSON sebesar **249 MB** dalam waktu 70 detik (3.6 MB/s). Keterlambatan P95 (223.7 ms) kemungkinan besar dipengaruhi oleh waktu *parsing* dan transfer *payload* data JSON yang besar ke 100 *user* secara bersamaan.

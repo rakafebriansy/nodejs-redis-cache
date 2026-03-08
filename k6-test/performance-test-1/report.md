@@ -23,7 +23,7 @@ Skenario pengujian menyimulasikan lonjakan akses hingga **100 *request* bersamaa
 
 ### 🔍 2. Akar Masalah (Bottleneck)
 Masalah murni terjadi pada antrean database akibat **N+1 Query Problem**. 
-Saat aplikasi POS menerima ratusan *request* menu secara bersamaan, Prisma melakukan *query* berulang kali ke database untuk menarik data *parent* dan kemudian melakukan *looping* untuk memanggil *child* kategorinya secara terpisah. Server Node.js terbukti sanggup menahan beban (terlihat dari *error rate* 0%), tetapi MySQL kewalahan melayani eksekusi puluhan ribu *query* kecil secara masif dalam satu waktu, sehingga antrean memanjang dan memicu *delay* hingga 10 detik.
+Saat aplikasi menerima ratusan *request* menu secara bersamaan, Prisma melakukan *query* berulang kali ke database untuk menarik data *parent* dan kemudian melakukan *looping* untuk memanggil *child* kategorinya secara terpisah. Server Node.js terbukti sanggup menahan beban (terlihat dari *error rate* 0%), tetapi MySQL kewalahan melayani eksekusi puluhan ribu *query* kecil secara masif dalam satu waktu, sehingga antrean memanjang dan memicu *delay* hingga 10 detik.
 
 ### 💡 3. Rekomendasi Solusi
 Sebelum menambahkan *layer* infrastruktur baru seperti Redis, logika pengambilan data di level ORM/aplikasi harus disehatkan terlebih dahulu agar tidak menyiksa database.
