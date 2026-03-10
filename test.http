@@ -9,9 +9,9 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "username" : "khannedy",
-  "password" : "rahasia",
-  "name" : "Eko Kurniawan"
+  "username" : "raka",
+  "password" : "password",
+  "name" : "Raka Febrian"
 }
 
 ###
@@ -21,8 +21,8 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "username" : "khannedy",
-  "password" : "rahasia"
+  "username" : "raka",
+  "password" : "password"
 }
 
 ###
@@ -40,7 +40,7 @@ Accept: application/json
 Authorization: 61095e4d-7fee-470c-a227-49f6f08b9c87
 
 {
-  "name" : "Eko Kurniawan Khannedy"
+  "name" : "Raka Febrian raka"
 }
 
 ###
